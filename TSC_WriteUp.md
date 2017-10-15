@@ -24,6 +24,12 @@ The goals / steps of this project are the following:
 [image6]: ./examples/road_work.jpg        "Road work"
 [image7]: ./examples/stop.jpg             "Stop sign"
 [image8]: ./examples/turn_right_ahead.jpg "Turn right ahead"
+[training_hist]: ./examples/training_hist.png
+[valid_hist]: ./examples/validation_hist.png
+[test_hist]: ./examples/test_hist.png
+![20kmhr_orig_img][./examples/20kmhr_orig.png]
+![20kmhr_mod_img][./examples/20kmhr_orig_mod.png]
+
 
 
 
@@ -59,33 +65,41 @@ I used the numpy library to calculate summary statistics of the traffic signs da
 
 ### Exploratory Visualization
 
-For each of the three data sets, we plot a histogram showing the distribution of sign types, and subsequently plot two examples of each sign type. Note that the _relative_ distributions have roughly the same structure in each histogram. 
+For each of the three data sets, we plot a histogram showing the distribution of sign types, and subsequently plot two examples of every sign type (see the notebook for these pictures). Note that the _relative_ distributions have roughly the same structure in each histogram. 
 
-![Training][./examples/training_hist.jpg]
+![Training][training_hist]
+![Validation][valid_hist]
+![Test][test_hist]
 
 
-###3. Design and Test a Model Architecture
 
-####A. I began by considering modifications to the LeNet architecture without modifying the training data, specifically removing the pooling in one or both of the two CovNet layers and adding a third Covnet layer. I was unable to obtain anything better than about 85% validation accuracy. By adding dropout on the fully connected layers, I was able to increase this result to about 90%. As I think is often the case 
-in machine learning, more data will generally produce better (and less over-fit) results, 
+##  Design and Test a Model Architecture
+
+### Preprocessing 
+
+The first preprocessing step I considered was normalization. I tried
+
+  i)normalizing each color channel for all data sets to zero mean and unit variance,
+  ii) and normalizing according to pixel = (pixel - 128)/128.0.
+
+Unfortunately this never seemed to produce a good result. The model always seemed to get trapped in a 
+local minimum. I have included the code for the normalization in the notebook but left it 
+commented out. It may be that normalization would improve results with the addition of other processing
+steps I tried later (e.g. training set augmentation, drop out on the network). 
+
+As I think is often the case in machine learning, more data will generally produce better (and less over-fit) results, 
 than making very complex models. I therefore decided to augment the training data by generating 
 random rotations and scalings of each image in the original set and adding back, thereby 
-doubling its size. Each rotation and scaling was chosen as a random number from a uniform distribution between +/- 10 degrees and (0.8,1.25), respectively.  
+doubling its size. Each rotation and scaling was chosen as a random number from a uniform distribution between +/- 10 degrees and (0.85,1.25), respectively.  
 
 Below is an example of the first 20 km/hr speed limit sign in the training set and the same sign
 after a random rotation and scaling. 
 
-![alt text][image2]
+![20kmhr_orig][20kmhr_orig_img]     ![20kmhr_mod][20kmhr_mod_img]
 
 
-Another preprocessing step I considered was normalization. I considered 
+I began by considering modifications to the LeNet architecture without modifying the training data, specifically removing the pooling in one or both of the two CovNet layers and adding a third Covnet layer. I was unable to obtain anything better than about 85% validation accuracy. By adding dropout on the fully connected layers, I was able to increase this result to about 90%. 
 
-i)normalizing each color channel for all data sets to zero mean and unit variance,
-ii) and normalizing according to pixel = (pixel - 128)/128.0.
-
-Unfortunately this never produced a good result. The model always seemed to get trapped in a 
-local minima. I have included the code for the normalization in the notebook but left it 
-commented out.   
 
 
 
