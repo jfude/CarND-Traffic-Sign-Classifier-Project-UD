@@ -3,7 +3,7 @@
 
 ---
 
-## Build a Traffic Sign Recognition Project**
+## Build a Traffic Sign Recognition Project 
 
 The goals / steps of this project are the following:
 * Load the data set (see below for links to the project data set)
@@ -19,16 +19,16 @@ The goals / steps of this project are the following:
 [image1]: ./examples/visualization.jpg "Visualization"
 [image2]: ./examples/grayscale.jpg        "Grayscaling"
 [image3]: ./examples/random_noise.jpg     "Random Noise"
-[image4]: ./examples/20kmhr.jpg           "20 km/hr speed limit"
-[image5]: ./examples/ahead_only.jpg       "Ahead only"
-[image6]: ./examples/road_work.jpg        "Road work"
-[image7]: ./examples/stop.jpg             "Stop sign"
-[image8]: ./examples/turn_right_ahead.jpg "Turn right ahead"
+[20kmhr_img]: ./examples/20kmhr.jpg           "20 km/hr speed limit"
+[ahead_only_img]: ./examples/ahead_only.jpg       "Ahead only"
+[road_work_img]: ./examples/road_work.jpg        "Road work"
+[stop_img]: ./examples/stop.jpg             "Stop sign"
+[turn_right_ahead_img]: ./examples/turn_right_ahead.jpg  "Turn right ahead"
 [training_hist]: ./examples/training_hist.png
 [valid_hist]: ./examples/validation_hist.png
 [test_hist]: ./examples/test_hist.png
-![20kmhr_orig_img][./examples/20kmhr_orig.png]
-![20kmhr_mod_img][./examples/20kmhr_orig_mod.png]
+[20kmhr_orig_img]: ./examples/20kmhr_from_train.png
+[20kmhr_mod_img]: ./examples/20kmhr_from_train_mod.png
 
 
 
@@ -40,19 +40,19 @@ Here I will provide a reference to the sections below that address each individu
   - [Dataset Summary](#dataset-summary)
   - [Exploratory Visualization](#exploratory-visualization)
 - [Design and Test a Model Architecture]
-  - [Preprocessing] (#preprocessing)
-  - [Model Architecture] (#model-architecture)
-  - [Model Training] (#model-training)
-  - [Solution Approach] (#solution-approach)
+  - [Preprocessing](#preprocessing)
+  - [Model Architecture](#model-architecture)
+  - [Model Training](#model-training)
+  - [Solution Approach](#solution-approach)
 - [Test A Model On New Images]
-  - [Acquiring New Images] (#acquiring-new-images)
-  - [Performance on New Images] (#performance-on-new-images)
-  - [Model Certainty Softmax Probabilities] (#model-certainty-softmax-probabilities)
+  - [Acquiring New Images](#acquiring-new-images)
+  - [Performance on New Images](#performance-on-new-images)
+  - [Model Certainty Softmax Probabilities](#model-certainty-softmax-probabilities)
  
 
 ## Data Set Summary & Exploration
 
-## Dataset Summary
+### Dataset Summary
 
 I used the numpy library to calculate summary statistics of the traffic signs data set:
 
@@ -79,8 +79,9 @@ For each of the three data sets, we plot a histogram showing the distribution of
 
 The first preprocessing step I considered was normalization. I tried
 
-  i)normalizing each color channel for all data sets to zero mean and unit variance,
-  ii) and normalizing according to pixel = (pixel - 128)/128.0.
+i)normalizing each color channel for all data sets to zero mean and unit variance,
+
+ii) and normalizing according to pixel = (pixel - 128)/128.0.
 
 Unfortunately this never seemed to produce a good result. The model always seemed to get trapped in a 
 local minimum. I have included the code for the normalization in the notebook but left it 
@@ -98,31 +99,33 @@ after a random rotation and scaling.
 ![20kmhr_orig][20kmhr_orig_img]     ![20kmhr_mod][20kmhr_mod_img]
 
 
-I began by considering modifications to the LeNet architecture without modifying the training data, specifically removing the pooling in one or both of the two CovNet layers and adding a third Covnet layer. I was unable to obtain anything better than about 85% validation accuracy. By adding dropout on the fully connected layers, I was able to increase this result to about 90%. 
 
+### Model Architecture
 
+I began by considering modifications to the LeNet architecture without modifying the training data, specifically removing the pooling in one or both of the two convolutional layers and adding a third convolutional layer. I was unable to obtain anything better than about 85% validation accuracy. By adding dropout on the fully connected layers, I was able to increase this result to about 90%. With addition of the augmented data as described above, I was able to achieve 94% validation accuracy.
 
-
-####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
-
-My final model consisted of the following layers:
+My final model is essentially the same as the LeNet architecture, consisting of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
+| Convolution       | 5x5 filter, 1x1 stride, VALID padding, outputs 28x28x6 	|
+| RELU					    |		outputs 28x28x6										|
+| Max pooling	      | 2x2 stride,  outputs 14x14x6 				|
+| Convolution 	    |  5x5 filter, 1x1 stride, VALID padding, outputs 10x10x16 	|
+| RELU					    |		outputs 14x14x16										|
+| Max pooling	      | 2x2 stride,  outputs 5x5x16 (=400)		|
+| Fully connected		|   400x120     	|
+| RELU					    |		outputs 120			|
+| Dropout           | keep probability 80%  |
+| Fully connected		|   120x84     	|
+| RELU					    |		outputs 84			|
+| Dropout           | keep probability 80%  |
+| Fully connected		|   84x43     	|
+| RELU					    |		outputs 43 (# of sign types)		|
 
 
-####3. Model training 
-
+### Model Training 
 
 The basic Lenet architecture was used for the model, with dropout included on the 
 fully connected layers. The Adam optimizer was used for computing and applying gradients. 
@@ -130,16 +133,14 @@ I found that using a slightly smaller batch size (100) than the Lenet architectu
 (128), and slightly smaller learning rate produced the best results. It was necessary to 
 increase the number of epochs from the default of 10 to 15, to ensure a validation 
 accuracy that well clears the 93% threshold. Unfortunately, this does produce a 
-bit of overfitting.  
+some of overfitting as will be seen in the last section of this write-up.  
 
 
 
+### Solution Approach
 
-####4. Model Results
-
-Different model architectures and tuning parameters that were considered were discussed 
+Different model architectures and tuning parameters that were considered to develop the final solution were discussed 
 above. 
-
 
 My final model results were:
 * Training set accuracy of ?
@@ -148,23 +149,24 @@ My final model results were:
 
  
 
-###Test a Model on New Images
+## Test a Model on New Images
 
-I found the five following German traffic signs on the web and provide them in the report
+The following is a discussion of running the the validated model against five images of German traffic signs
+found on the web.
 
-Here are five German traffic signs that I found on the web:
+### Acquiring New Images
+I found the five following German traffic signs on the web:
 
-![20kmhr][./examples/20kmhr.jpg]
-![Road Work][./examples/road_work.jpg]
-![Ahead Only][./examples/ahead_only.jpg]
-![Turn Right Ahead][./examples/turn_right_ahead.jpg]
-![Stop][./examples/stop.jpg]
 
+![20kmhr][20kmhr_img]
+![Road Work][road_work_img]
+![Ahead Only][ahead_only_img]
+![Turn Right Ahead][turn_right_ahead_img]
+![Stop][stop_img]
 
 
 An "ahead only or turn right head" combination sign may be difficult to pick out from an
-individual "ahead only" or "turn right head" sign for obvious reasons. The road_work sign
-looks very similar to the signs. 
+individual "ahead only" or "turn right head" sign for obvious reasons. Also they look somewhat similar to each other, which is why I chose them for the test here.
 
 Interestingly, before arriving at the final parameters for the model architecture, the red 
 and white Stop sign was often found to be classified as the Priority Road sign. Perhaps the 
@@ -172,11 +174,9 @@ model had a hard time distinguishing the nearly solid white in the center of the
 (as the image is quite low resolution) and the yellow in the center of the Priority Road sign.
    
 
-####2 Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+### Performance on New Images
 
-
-
-Here are the results of the prediction:
+Here are the model predictions running against the above five images:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -189,14 +189,14 @@ Here are the results of the prediction:
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares somwhat favorably to the accuracy on the test set of 93%. 
 
-####3. 
 
+### Model Certainty Softmax Probabilities
 
-Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
-
+The certainty of the model is given by the softmax softmax probabilities for each prediction.
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
-
 The top five soft max probabilities  for the 5 downloaded images were as follows:
+
+
 
 
 20 km/h Speed Limit
