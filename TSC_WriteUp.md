@@ -39,12 +39,12 @@ Here I will provide a reference to the sections below that address each individu
 - Dataset Exploration
   - [Dataset Summary](#dataset-summary)
   - [Exploratory Visualization](#exploratory-visualization)
-- [Design and Test a Model Architecture]
+- Design and Test a Model Architecture
   - [Preprocessing](#preprocessing)
   - [Model Architecture](#model-architecture)
   - [Model Training](#model-training)
   - [Solution Approach](#solution-approach)
-- [Test A Model On New Images]
+- Test A Model On New Images
   - [Acquiring New Images](#acquiring-new-images)
   - [Performance on New Images](#performance-on-new-images)
   - [Model Certainty Softmax Probabilities](#model-certainty-softmax-probabilities)
@@ -83,10 +83,9 @@ i)normalizing each color channel for all data sets to zero mean and unit varianc
 
 ii) and normalizing according to pixel = (pixel - 128)/128.0.
 
-Unfortunately this never seemed to produce a good result. The model always seemed to get trapped in a 
-local minimum. I have included the code for the normalization in the notebook but left it 
-commented out. It may be that normalization would improve results with the addition of other processing
-steps I tried later (e.g. training set augmentation, drop out on the network). 
+Unfortunately neither of these ever seemed to produce a good result. The model always seemed to get trapped in a 
+local minimum, never getting above about %80 vaildation accuracy. I have included the code for the normalization in
+the notebook but left it commented out. It may be that normalization would improve results with the addition of other processing steps I tried later (e.g. training set augmentation, drop out on the network). 
 
 As I think is often the case in machine learning, more data will generally produce better (and less over-fit) results, 
 than making very complex models. I therefore decided to augment the training data by generating 
@@ -117,10 +116,10 @@ My final model is essentially the same as the LeNet architecture, consisting of 
 | Max pooling	      | 2x2 stride,  outputs 5x5x16 (=400)		|
 | Fully connected		|   400x120     	|
 | RELU					    |		outputs 120			|
-| Dropout           | keep probability 80%  |
+| Dropout           | keep probability 70%  |
 | Fully connected		|   120x84     	|
 | RELU					    |		outputs 84			|
-| Dropout           | keep probability 80%  |
+| Dropout           | keep probability 70%  |
 | Fully connected		|   84x43     	|
 | RELU					    |		outputs 43 (# of sign types)		|
 
