@@ -1,12 +1,9 @@
-#**Traffic Sign Recognition** 
+# **Traffic Sign Recognition** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 
 ---
 
-**Build a Traffic Sign Recognition Project**
+## Build a Traffic Sign Recognition Project**
 
 The goals / steps of this project are the following:
 * Load the data set (see below for links to the project data set)
@@ -31,33 +28,40 @@ The goals / steps of this project are the following:
 
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
+Here I will provide a reference to the sections below that address each individual rubric. The rubric points and descriptions for this project may be found [here](https://review.udacity.com/#!/rubrics/481/view).
 
+- Dataset Exploration
+  - [Dataset Summary](#dataset-summary)
+  - [Exploratory Visualization](#exploratory-visualization)
+- [Design and Test a Model Architecture]
+  - [Preprocessing] (#preprocessing)
+  - [Model Architecture] (#model-architecture)
+  - [Model Training] (#model-training)
+  - [Solution Approach] (#solution-approach)
+- [Test A Model On New Images]
+  - [Acquiring New Images] (#acquiring-new-images)
+  - [Performance on New Images] (#performance-on-new-images)
+  - [Model Certainty Softmax Probabilities] (#model-certainty-softmax-probabilities)
+ 
 
-## Project Location
-### The project code may be found [here](https://github.com) 
+## Data Set Summary & Exploration
 
----
+## Dataset Summary
 
-###Data Set Summary & Exploration
-
-####1.Summary of the data set. 
-
-I used the numpy library to calculate summary statistics of the traffic
-signs data set:
+I used the numpy library to calculate summary statistics of the traffic signs data set:
 
 * The size of training set is *34799*
-* The size of the validation set is 
+* The size of the validation set is *4410*
 * The size of test set is *12630*
 * The shape of a traffic sign image is *32*x*32*x*3*, 32x32 pixels with 3 color channels  
 * The number of unique classes/labels in the data set is *43*. This is the number of types of signs considered in these datasets.
 
 
-####2. Exploratory visualization of the dataset.
+### Exploratory Visualization
 
-For each of the three data sets, we plot a histogram showing the distribution of sign types, and subsequently plot two examples of each sign type. Note that the _relative_distributions have roughly the same structure in each histogram. 
+For each of the three data sets, we plot a histogram showing the distribution of sign types, and subsequently plot two examples of each sign type. Note that the _relative_ distributions have roughly the same structure in each histogram. 
 
-![alt text][image1]
+![Training][./examples/training_hist.jpg]
 
 
 ###3. Design and Test a Model Architecture
