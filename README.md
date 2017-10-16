@@ -15,7 +15,7 @@ and related techniques, and the choice of data sets is based off the benchmark f
 - Traffic_Sign_Classifier.ipynb  -- IPython notebook containing code for this project
 - ./examples/*.jpg  -- 5 Pictures of German traffic signs downloaded from the internet
   		       down sampled to 32x32 pixels, used as an extra test for the network. Also other 
-             their pics referenced in TSC_WriteUp.md are found in the ./examples directory.
+             pics referenced in TSC_WriteUp.md are found in the ./examples directory.
 - Traffic_Sign_Classifier.html -- an html save of a complete run (showing results) of the Traffic_Sign_Classifier.ipynb 
 
 - ./dataset/training.p -- Provided training data in pickle file
