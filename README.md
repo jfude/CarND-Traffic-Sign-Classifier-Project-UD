@@ -2,6 +2,8 @@
 Udacity CarND-Traffic-Sign-Classifier-Project
 ===================================================
 
+NOTE TO REVIEWER: AT THE MOMENT NOTEBOOK AND HTML ARE INCONSISTENT ...FIXING THIS NOW!!
+
 This repository contains the completed CarND-Traffic-Sign-Classifier-Project, which
 demonstrates training, validation, and testing of a neural network for classifying 
 German traffic signs. It is an introduction to the use of convolutional neural networks
