@@ -13,8 +13,9 @@ and related techniques, and the choice of data sets is based off the benchmark f
 - README.md -- this file.
 - TSC_WriteUp.md -- Detailed description of iPython notebook code and expected run results
 - Traffic_Sign_Classifier.ipynb  -- IPython notebook containing code for this project
-- ./internet/*.jpg  -- 5 Pictures of German traffic signs downloaded from the internet
-  		       down sampled to 32x32 pixels, used as an extra test for the network.
+- ./examples/*.jpg  -- 5 Pictures of German traffic signs downloaded from the internet
+  		       down sampled to 32x32 pixels, used as an extra test for the network. Also other 
+             their pics referenced in TSC_WriteUp.md are found in the ./examples directory.
 - Traffic_Sign_Classifier.html -- an html save of a complete run (showing results) of the Traffic_Sign_Classifier.ipynb 
 
 - ./dataset/training.p -- Provided training data in pickle file
