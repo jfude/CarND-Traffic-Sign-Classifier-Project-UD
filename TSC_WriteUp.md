@@ -6,7 +6,7 @@
 ## Build a Traffic Sign Recognition Project 
 
 The goals / steps of this project are the following:
-* Load the data set (see below for links to the project data set)
+* Load the data set
 * Explore, summarize and visualize the data set
 * Design, train and test a model architecture
 * Use the model to make predictions on new images
@@ -65,7 +65,7 @@ I used the numpy library to calculate summary statistics of the traffic signs da
 
 ### Exploratory Visualization
 
-For each of the three data sets, we plot a histogram showing the distribution of sign types, and subsequently plot two examples of every sign type (see the notebook for these pictures). Note that the _relative_ distributions have roughly the same structure in each histogram. 
+For each of the three data sets, we plot a histogram showing the distribution of sign types, and subsequently plot two examples of every sign type (see the notebook for these pictures). The file signnames.csv contains the mapping from sign type to index. Note that the _relative_ distributions have roughly the same structure in each histogram. 
 
 ![Training][training_hist]
 ![Validation][valid_hist]
@@ -84,7 +84,7 @@ i)normalizing each color channel for all data sets to zero mean and unit varianc
 ii) and normalizing according to pixel = (pixel - 128)/128.0.
 
 Unfortunately neither of these ever seemed to produce a good result. The model always seemed to get trapped in a 
-local minimum, never getting above about %83 vaildation accuracy. I have included the code for the normalization in
+local minimum, never getting above about 83% vaildation accuracy. I have included the code for the normalization in
 the notebook but left it commented out. It may be that normalization would improve results with the addition of further processing steps beyond that which I implemented (e.g. training set augmentation, drop out on the network). 
 
 As I think is often the case in machine learning, more data will generally produce better (and less over-fit) results, 
@@ -166,7 +166,7 @@ individual "ahead only" or "turn right head" sign for obvious reasons. Also they
 
 Interestingly, before arriving at the final parameters for the model architecture, the turn right 
 ahead sign was often classified incorrectly, perhaps because it appears somewhat small (not well cropped)
-in the overall picture. Stop sign was also sometimes found to be classified as the Priority Road sign. Perhaps the 
+in the overall picture. The Stop sign was also sometimes found to be classified as the Priority Road sign. Perhaps the 
 model had a hard time distinguishing the nearly solid white in the center of the Stop sign 
 (as the image is quite low resolution) and the yellow in the center of the Priority Road sign.
    
@@ -184,13 +184,14 @@ Here are the model predictions running against the above five images:
 | Stop Sign			| Stop Sign       							|
 
 
-The model was able to correctly guess all 5 of the traffic signs, which gives an accuracy of 100%. Using more epochs may have given even higher certainties than this listed below.  This result compares favorably to the accuracy on the test set of 93.3%.  
+The final model was able to correctly guess all 5 of the traffic signs, which gives an accuracy of 100%. Using more epochs may have given even higher certainties than those listed below.  This result compares favorably to the accuracy on the test set of 93.3%.  
 
 
 ### Model Certainty Softmax Probabilities
 
-The certainty of the model is given by the softmax softmax probabilities for each prediction.
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The certainty of the model is given by the softmax probabilities for each prediction.
+The code for making predictions on the final model is located in the Ipython notebook cell under the heading
+**Output Top 5 Softmax Probabilities For Each Image Found on the Web**.
 It is not surprising that the "Turn Right Ahead" sign had the lowest probability in comparison to the other signs
 as that sign is the smallest relative to its picture size (i.e., in the other 4 examples, the sign takes up much more 
 of the picture).
@@ -200,7 +201,7 @@ The top five soft max probabilities  for the 5 downloaded images were as follows
 
 
 
-20 km/h Speed Limit
+**20 km/h Speed Limit**
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -211,7 +212,7 @@ The top five soft max probabilities  for the 5 downloaded images were as follows
 | .000				      | 100 km/h Speed Limit      							|
 
 
-Road Work 
+**Road Work** 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -222,7 +223,7 @@ Road Work
 | .022				      | Bumpy Road     							|
 
 
-Turn Right Ahead 
+**Turn Right Ahead** 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -233,7 +234,7 @@ Turn Right Ahead
 | .004				          | Turn Left Ahead      							|
 
 
-Ahead Only
+**Ahead Only**
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -243,7 +244,7 @@ Ahead Only
 | .000      			      | Yield					 				|
 | .000			            | Turn Left Ahead      							|
 
-Stop sign
+**Stop sign**
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
