@@ -129,8 +129,8 @@ My final model is essentially the same as the LeNet architecture, consisting of 
 The basic Lenet architecture was used for the model, with dropout included on the 
 fully connected layers. The Adam optimizer was used for computing and applying gradients. 
 I found that using a slightly smaller batch size (100) than the Lenet architecture default 
-(128), and slightly smaller learning rate produced the best results. It was found that only 8 epochs 
-is necessary to get a validation accuracy that well clears the 93% threshold. 
+(128), and slightly smaller learning rate produced the best results. It was found that 7-10 epochs 
+was necessary to get a validation accuracy that well clears the 93% threshold. 
 
 
 ### Solution Approach
@@ -139,9 +139,9 @@ Different model architectures and tuning parameters that were considered to deve
 above. 
 
 My final model results were:
-* Training set accuracy of 98.3%
-* Validation set accuracy of 94.3% 
-* Test set accuracy of 93.3%
+* Training set accuracy of 98.5%
+* Validation set accuracy of 94.5% 
+* Test set accuracy of 94.0%
 
  
 
@@ -178,13 +178,13 @@ Here are the model predictions running against the above five images:
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Speed Limit (20km/h)      		| Speed Limit (20km/h)   									| 
-| Road Work     			| Road Work										|
+| Road Work     			| Bicycles crossing 										|
 | Turn Right Ahead				| Turn Right Ahead 											|
 | Ahead Only	      		| Ahead Only					 				|
 | Stop Sign			| Stop Sign       							|
 
 
-The final model was able to correctly guess all 5 of the traffic signs, which gives an accuracy of 100%. Using more epochs may have given even higher certainties than those listed below.  This result compares favorably to the accuracy on the test set of 93.3%.  
+The final model was able to correctly identify  4 out of the 5 traffic signs, which gives an accuracy of 80%.   This result compares favorably to the accuracy on the test set of 93.3%.  One can see below that the incorrect prediction, that for the Road Work Sign, has the least certainty in comparison to the other signs, 45% (Bicycle crossing) in comparison to essentially 100% for the others. The model does at least give 5% probability that the sign is indeed a Road Work sign.
 
 
 ### Model Certainty Softmax Probabilities
@@ -192,9 +192,6 @@ The final model was able to correctly guess all 5 of the traffic signs, which gi
 The certainty of the model is given by the softmax probabilities for each prediction.
 The code for making predictions on the final model is located in the Ipython notebook cell under the heading
 **Output Top 5 Softmax Probabilities For Each Image Found on the Web**.
-It is not surprising that the "Turn Right Ahead" sign had the lowest probability in comparison to the other signs
-as that sign is the smallest relative to its picture size (i.e., in the other 4 examples, the sign takes up much more 
-of the picture).
 
 The top five soft max probabilities  for the 5 downloaded images were as follows:
 
@@ -205,9 +202,9 @@ The top five soft max probabilities  for the 5 downloaded images were as follows
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .963         			| 20 km/h Speed Limit   									| 
-| .035     				  | 70 km/h Speed Limit									|
-| .002				      | 30 km/h Speed Limit											|
+| 1.00        			| 20 km/h Speed Limit   									| 
+| .000     				  | 30 km/h Speed Limit									|
+| .000				      | 70 km/h Speed Limit											|
 | .000	      			| 120 km/h Speed Limit					 				|
 | .000				      | 100 km/h Speed Limit      							|
 
@@ -216,22 +213,22 @@ The top five soft max probabilities  for the 5 downloaded images were as follows
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .818         			| Road Work  									| 
-| .049    				  | Bicycles crossing 										|
-| .043				      | Beware of ice/snow										|
-| .043	      			| Double Curve					 				|
-| .022				      | Bumpy Road     							|
+| .451         			| Bicycles crossing 									| 
+| .317    				  | Road Narrows on the right 										|
+| .102				      | Double Curve										|
+| .005	      			| Beware of ice/snow					 				|
+| .005				      | Road Work     							|
 
 
 **Turn Right Ahead** 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .442         			    | Turn Right Ahead   									| 
-| .285          				| Go Straight or Left 										|
-| .014				          | Keep Left											|
-| .005	      			      | Roundabout Mandatory					 				|
-| .004				          | Turn Left Ahead      							|
+| 1.00        			    | Turn Right Ahead   									| 
+| .000          				| Roundabout mandatory										|
+| .000				          | Ahead only											|
+| .000	      			    | Keep Left 					 				|
+| .000				          | Vehicles over 3.5 metric tons prohibited      							|
 
 
 **Ahead Only**
@@ -239,19 +236,19 @@ The top five soft max probabilities  for the 5 downloaded images were as follows
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | 1.00         			    | Ahead Only   									| 
-| .000     				      | Go Straight or Right 										|
-| .000					          | Keep Left											|
-| .000      			      | Yield					 				|
-| .000			            | Turn Left Ahead      							|
+| .000     				      | Turn Right Ahead 										|
+| .000					          | Turn Left Ahead											|
+| .000      			      | 	Roundabout mandatory				 				|
+| .000			            | Keep Right   							|
 
 **Stop sign**
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | 1.00         			| Stop sign   									| 
-| .000     				  | No entry 										|
-| .000					| Yield											|
-| .000	      			| No passing				 				|
-| .000				    | End of all speed and passing limits      							|
+| .000     				  | Road Work										|
+| .000					| No entry 										|
+| .000	      			| Yield				 				|
+| .000				    | Speed limit (30km/h)      							|
 
 
