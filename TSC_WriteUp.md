@@ -56,7 +56,7 @@ Here I will provide a reference to the sections below that address each individu
 
 I used the numpy library to calculate summary statistics of the traffic signs data set:
 
-* The size of training set is *34799*
+* The size of the original training set is *34799*
 * The size of the validation set is *4410*
 * The size of test set is *12630*
 * The shape of a traffic sign image is *32*x*32*x*3*, 32x32 pixels with 3 color channels  
@@ -84,13 +84,13 @@ i)normalizing each color channel for all data sets to zero mean and unit varianc
 ii) and normalizing according to pixel = (pixel - 128)/128.0.
 
 Unfortunately neither of these ever seemed to produce a good result. The model always seemed to get trapped in a 
-local minimum, never getting above about %80 vaildation accuracy. I have included the code for the normalization in
-the notebook but left it commented out. It may be that normalization would improve results with the addition of other processing steps I tried later (e.g. training set augmentation, drop out on the network). 
+local minimum, never getting above about %83 vaildation accuracy. I have included the code for the normalization in
+the notebook but left it commented out. It may be that normalization would improve results with the addition of further processing steps beyond that which I implemented (e.g. training set augmentation, drop out on the network). 
 
 As I think is often the case in machine learning, more data will generally produce better (and less over-fit) results, 
 than making very complex models. I therefore decided to augment the training data by generating 
-random rotations and scalings of each image in the original set and adding back, thereby 
-doubling its size. Each rotation and scaling was chosen as a random number from a uniform distribution between +/- 10 degrees and (0.85,1.25), respectively.  
+random rotations and scalings of each image in the original set, twice, and then added back, thereby 
+tripling the original size of the training set. Each rotation and scaling was chosen as a random number from a uniform distribution between +/- 10 degrees and (0.85,1.25), respectively.  
 
 Below is an example of the first 20 km/hr speed limit sign in the training set and the same sign
 after a random rotation and scaling. 
@@ -101,7 +101,7 @@ after a random rotation and scaling.
 
 ### Model Architecture
 
-I began by considering modifications to the LeNet architecture without modifying the training data, specifically removing the pooling in one or both of the two convolutional layers and adding a third convolutional layer. I was unable to obtain anything better than about 85% validation accuracy. By adding dropout on the fully connected layers, I was able to increase this result to about 90%. With addition of the augmented data as described above, I was able to achieve 94% validation accuracy.
+I began by considering modifications to the LeNet architecture without modifying the training data, specifically removing the pooling in one or both of the two convolutional layers and adding a third convolutional layer. I was unable to obtain anything better than about 85% validation accuracy. By adding dropout on the fully connected layers, I was able to increase this result to about 90%. With addition of the augmented data as described above, I was able to achieve 94-95% validation accuracy.
 
 My final model is essentially the same as the LeNet architecture, consisting of the following layers:
 
@@ -129,11 +129,8 @@ My final model is essentially the same as the LeNet architecture, consisting of 
 The basic Lenet architecture was used for the model, with dropout included on the 
 fully connected layers. The Adam optimizer was used for computing and applying gradients. 
 I found that using a slightly smaller batch size (100) than the Lenet architecture default 
-(128), and slightly smaller learning rate produced the best results. It was necessary to 
-increase the number of epochs from the default of 10 to 15, to ensure a validation 
-accuracy that well clears the 93% threshold. Unfortunately, this does produce a 
-some of overfitting as will be seen in the last section of this write-up.  
-
+(128), and slightly smaller learning rate produced the best results. It was found that only 8 epochs 
+is necessary to get a validation accuracy that well clears the 93% threshold. 
 
 
 ### Solution Approach
@@ -142,9 +139,9 @@ Different model architectures and tuning parameters that were considered to deve
 above. 
 
 My final model results were:
-* Training set accuracy of ?
-* Validation set accuracy of ? 
-* Test set accuracy of ?
+* Training set accuracy of 98.3%
+* Validation set accuracy of 94.3% 
+* Test set accuracy of 93.3%
 
  
 
@@ -167,8 +164,9 @@ I found the five following German traffic signs on the web:
 An "ahead only or turn right head" combination sign may be difficult to pick out from an
 individual "ahead only" or "turn right head" sign for obvious reasons. Also they look somewhat similar to each other, which is why I chose them for the test here.
 
-Interestingly, before arriving at the final parameters for the model architecture, the red 
-and white Stop sign was often found to be classified as the Priority Road sign. Perhaps the 
+Interestingly, before arriving at the final parameters for the model architecture, the turn right 
+ahead sign was often classified incorrectly, perhaps because it appears somewhat small (not well cropped)
+in the overall picture. Stop sign was also sometimes found to be classified as the Priority Road sign. Perhaps the 
 model had a hard time distinguishing the nearly solid white in the center of the Stop sign 
 (as the image is quite low resolution) and the yellow in the center of the Priority Road sign.
    
@@ -183,16 +181,20 @@ Here are the model predictions running against the above five images:
 | Road Work     			| Road Work										|
 | Turn Right Ahead				| Turn Right Ahead 											|
 | Ahead Only	      		| Ahead Only					 				|
-| Stop Sign			| Priority Road       							|
+| Stop Sign			| Stop Sign       							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares somwhat favorably to the accuracy on the test set of 93%. 
+The model was able to correctly guess all 5 of the traffic signs, which gives an accuracy of 100%. Using more epochs may have given even higher certainties than this listed below.  This result compares favorably to the accuracy on the test set of 93.3%.  
 
 
 ### Model Certainty Softmax Probabilities
 
 The certainty of the model is given by the softmax softmax probabilities for each prediction.
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+It is not surprising that the "Turn Right Ahead" sign had the lowest probability in comparison to the other signs
+as that sign is the smallest relative to its picture size (i.e., in the other 4 examples, the sign takes up much more 
+of the picture).
+
 The top five soft max probabilities  for the 5 downloaded images were as follows:
 
 
@@ -202,53 +204,53 @@ The top five soft max probabilities  for the 5 downloaded images were as follows
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| 20 km/h Speed Limit   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| .963         			| 20 km/h Speed Limit   									| 
+| .035     				  | 70 km/h Speed Limit									|
+| .002				      | 30 km/h Speed Limit											|
+| .000	      			| 120 km/h Speed Limit					 				|
+| .000				      | 100 km/h Speed Limit      							|
 
 
 Road Work 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| 20 km/h Speed Limit   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| .818         			| Road Work  									| 
+| .049    				  | Bicycles crossing 										|
+| .043				      | Beware of ice/snow										|
+| .043	      			| Double Curve					 				|
+| .022				      | Bumpy Road     							|
 
 
-Ahead Only 
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| 20 km/h Speed Limit   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
-
-
-Turn Right Ahead
+Turn Right Ahead 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| 20 km/h Speed Limit   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| .442         			    | Turn Right Ahead   									| 
+| .285          				| Go Straight or Left 										|
+| .014				          | Keep Left											|
+| .005	      			      | Roundabout Mandatory					 				|
+| .004				          | Turn Left Ahead      							|
+
+
+Ahead Only
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			    | Ahead Only   									| 
+| .000     				      | Go Straight or Right 										|
+| .000					          | Keep Left											|
+| .000      			      | Yield					 				|
+| .000			            | Turn Left Ahead      							|
 
 Stop sign
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| 20 km/h Speed Limit   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| 1.00         			| Stop sign   									| 
+| .000     				  | No entry 										|
+| .000					| Yield											|
+| .000	      			| No passing				 				|
+| .000				    | End of all speed and passing limits      							|
 
 
